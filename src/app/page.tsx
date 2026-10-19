@@ -3,15 +3,12 @@ import { SectionWrapper } from "@/components/Landing/SectionWrapper";
 
 const HeroText = {
   title: `Junior SOC Analyst | Cybersecurity | Biomedical Engineer`,
-  whoAmI: `Biomedical Engineer transitioning into cybersecurity, targeting Tier 1 SOC Analyst roles. Completing Fortinet NSE 1 and
-developing foundations in alert triage, log analysis, and incident documentation. Background in real-time troubleshooting
-during live neurosurgical procedures, systematic root-cause analysis of electronic faults, and client-facing communication
-in English and Spanish. Calm under pressure, flexible for any shift (day, evening, overnight, weekends), and fast to learn new
-tools.`,
-  whatIDo: `WIDO`,
-  myApproach: `MA`,
-  myValues: `MV`,
-  callToAction: `CTA`,
+  whoAmI: `Biomedical engineer moving into cybersecurity. I spent years troubleshooting critical equipment in real time, including during live neurosurgical procedures. Now I bring that same calm, methodical approach to security monitoring and network defense.`,
+  whatIDo: `I run a hands-on home lab: alert triage with Wazuh SIEM, network reconnaissance with Nmap, and network segmentation design. Currently completing Fortinet NSE 1.`,
+  myApproach: `Find, fix, verify. I document every step so the next analyst can follow it.`,
+  myValues: `Clear communication in English and Spanish, honest reporting, and staying calm under pressure.`,
+  callToAction: `See my lab reports on GitHub: `,
+  labUrl: `https://github.com/liliaem/soc-home-lab`,
 };
 export default function Home() {
   return (
@@ -32,6 +29,14 @@ export default function Home() {
               <p className="text-xl md:text-2xl mb-2">{HeroText.myValues}</p>
               <p className="text-lg md:text-xl font-bold border-l-4 pl-4 border-red-600 dark:border-gray-200 pb-2 text-amber-900 dark:text-amber-200">
                 {HeroText.callToAction}
+                <a
+                  href={HeroText.labUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="underline underline-offset-4 hover:text-red-600 dark:hover:text-white transition-colors duration-300"
+                >
+                  github.com/liliaem/soc-home-lab
+                </a>
               </p>
             </div>
             <div className="relative md:justify-end mt-8 hidden md:flex md:scale-100">

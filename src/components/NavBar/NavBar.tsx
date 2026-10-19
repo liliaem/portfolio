@@ -58,7 +58,7 @@ const NavBar = () => {
                 className="inline-block mr-1"
                 aria-hidden="true"
               />
-              My Resumee
+              My Resume
             </a>
           </div>
           <div className="text-md space-x-3">
