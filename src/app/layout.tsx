@@ -6,12 +6,14 @@ import { ThemeProvider } from "@/utils/theme/ThemeProvider";
 
 export const metadata: Metadata = {
   title: "Lilia Martinez - Portfolio",
-  description: "This is the portfolio of Lilia Martinez, a Project Manager.",
+  description:
+    "This is the portfolio of Lilia Martinez, a SOC Security Analyst.",
   keywords: [
     "Lilia Martinez",
-    "Portfolio",
-    "Project Manager",
-    "Project Coordinator",
+    "SOC Security Analyst Portfolio",
+    "SOC Engineer Portfolio",
+    "SOC Analyst Portfolio",
+    "SOC",
   ],
 };
 
