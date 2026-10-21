@@ -14,15 +14,6 @@ const Footer = () => {
           <span className="font-medium">Lilia E. Martinez Rosas</span>
           <p>
             <Link
-              href="tel:+522727056002"
-              className="hover:text-white transition-colors"
-              aria-label="Call Phone Number"
-            >
-              +52 272 705 6002
-            </Link>
-          </p>
-          <p>
-            <Link
               href="mailto:liliaelba123@gmail.com"
               className="hover:text-white transition-colors"
               aria-label="Send Email to liliaelba123@gmail.com"
