@@ -3,8 +3,8 @@ import { SectionWrapper } from "@/components/Landing/SectionWrapper";
 
 const HeroText = {
   title: `Junior SOC Analyst | Cybersecurity | Biomedical Engineer`,
-  whoAmI: `Biomedical engineer moving into cybersecurity. I troubleshot surgical equipment during live spine and neurosurgical procedures, spent two years repairing electronics for customers, and almost three years running my own rental business. Now I bring that same calm, methodical approach to security monitoring and network defense.`,
-  whatIDo: `I run a hands-on home lab: alert triage with Wazuh SIEM, network reconnaissance with Nmap, and network segmentation design. Currently completing Fortinet NSE 1.`,
+  whoAmI: `Biomedical engineer moving into IT and cybersecurity operations. I troubleshot surgical equipment during live spine and neurosurgical procedures, spent two years repairing electronics down to the component level, formatting computers and installing firewalls, and almost three years running my own rental business, where I turned recurring guest issues into clear written procedures and automated routine tasks. Now I bring that same calm, methodical, pattern-focused approach to security monitoring and IT operations.`,
+  whatIDo: `I run a hands-on home lab: I simulated an SSH brute-force attack with Hydra, triaged the alerts in Wazuh SIEM, and investigated the same logs in Splunk Cloud using SPL. I’ve also done network reconnaissance with Nmap and network segmentation design. Currently completing Fortinet NSE 1.`,
   myApproach: `Identify, confirm, fix, test. I document each step so it can be replicated and analyzed.`,
   myValues: `Clear communication in English and Spanish, honest reporting, and staying calm under pressure.`,
   callToAction: `See my lab reports on GitHub: `,
@@ -24,9 +24,15 @@ export default function Home() {
               <div className="md:hidden pb-2">
                 <PolaroidPhoto />
               </div>
-              <p className="text-lg sm:text-xl md:text-2xl">{HeroText.whoAmI}</p>
-              <p className="text-lg sm:text-xl md:text-2xl">{HeroText.whatIDo}</p>
-              <p className="text-lg sm:text-xl md:text-2xl mb-2">{HeroText.myValues}</p>
+              <p className="text-lg sm:text-xl md:text-2xl">
+                {HeroText.whoAmI}
+              </p>
+              <p className="text-lg sm:text-xl md:text-2xl">
+                {HeroText.whatIDo}
+              </p>
+              <p className="text-lg sm:text-xl md:text-2xl mb-2">
+                {HeroText.myValues}
+              </p>
               <p className="text-base sm:text-lg md:text-xl font-bold border-l-4 pl-3 sm:pl-4 border-red-600 dark:border-gray-200 pb-2 text-amber-900 dark:text-amber-200">
                 {HeroText.callToAction}
                 <a
