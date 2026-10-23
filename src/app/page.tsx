@@ -2,8 +2,8 @@ import { PolaroidPhoto } from "@/components/Landing/PolaroidPhoto";
 import { SectionWrapper } from "@/components/Landing/SectionWrapper";
 
 const HeroText = {
-  title: `Junior SOC Analyst | Cybersecurity | Biomedical Engineer`,
-  whoAmI: `Biomedical engineer moving into IT and cybersecurity operations. I troubleshot surgical equipment during live spine and neurosurgical procedures, spent two years repairing electronics down to the component level, formatting computers and installing firewalls, and almost three years running my own rental business, where I turned recurring guest issues into clear written procedures and automated routine tasks. Now I bring that same calm, methodical, pattern-focused approach to security monitoring and IT operations.`,
+  title: `NOC/SOC 1 | Cybersecurity | Biomedical Engineer`,
+  whoAmI: `Biomedical engineer moving into IT and cybersecurity operations. I troubleshot surgical equipment during live spine and neurosurgical procedures, spent two years repairing electronics down to the component level, formatting computers and installing firewalls, and almost three years running my own rental business, where I turned recurring guest issues into clear written procedures. Now I bring that same calm, methodical, pattern-focused approach to security monitoring and IT operations.`,
   whatIDo: `I run a hands-on home lab: I simulated an SSH brute-force attack with Hydra, triaged the alerts in Wazuh SIEM, and investigated the same logs in Splunk Cloud using SPL. I’ve also done network reconnaissance with Nmap and network segmentation design. Currently completing Fortinet NSE 1.`,
   myApproach: `Identify, confirm, fix, test. I document each step so it can be replicated and analyzed.`,
   myValues: `Clear communication in English and Spanish, honest reporting, and staying calm under pressure.`,
