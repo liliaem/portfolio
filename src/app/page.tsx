@@ -1,10 +1,11 @@
 import { PolaroidPhoto } from "@/components/Landing/PolaroidPhoto";
 import { SectionWrapper } from "@/components/Landing/SectionWrapper";
+import { Certifications } from "@/components/Landing/Certifications";
 
 const HeroText = {
   title: `NOC/SOC 1 | Cybersecurity | Biomedical Engineer`,
   whoAmI: `Biomedical engineer moving into IT and cybersecurity operations. I troubleshot surgical equipment during live spine and neurosurgical procedures, spent two years repairing electronics down to the component level, formatting computers and installing firewalls, and almost three years running my own rental business, where I turned recurring guest issues into clear written procedures. Now I bring that same calm, methodical, pattern-focused approach to security monitoring and IT operations.`,
-  whatIDo: `I run a hands-on home lab: I simulated an SSH brute-force attack with Hydra, triaged the alerts in Wazuh SIEM, and investigated the same logs in Splunk Cloud using SPL. I’ve also done network reconnaissance with Nmap and network segmentation design. Currently completing Fortinet NSE 1.`,
+  whatIDo: `I run a hands-on home lab: I simulated an SSH brute-force attack with Hydra, triaged the alerts in Wazuh SIEM, and investigated the same logs in Splunk Cloud using SPL. I’ve also done network reconnaissance with Nmap and network segmentation design. I'm also Fortinet NSE 1 certified.`,
   myApproach: `Identify, confirm, fix, test. I document each step so it can be replicated and analyzed.`,
   myValues: `Clear communication in English and Spanish, honest reporting, and staying calm under pressure.`,
   callToAction: `See my lab reports on GitHub: `,
@@ -56,6 +57,9 @@ export default function Home() {
         <div className="max-w-184 text-wrap mx-auto hover:-skew-y-1 from-amber-300 to-amber-500 bg-linear-to-br text-shadow-lg p-5 sm:p-8 rounded-lg flex-justify-center shadow-xl/30 inset-shadow-amber-800/50">
           <p className="text-lg md:text-xl font-bold">{HeroText.myApproach}</p>
         </div>
+      </SectionWrapper>
+      <SectionWrapper className="pt-8 pb-12 bg-amber-100 dark:bg-amber-900 text-gray-900 dark:text-gray-100">
+        <Certifications />
       </SectionWrapper>
     </div>
   );
