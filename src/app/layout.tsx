@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import "@fontsource-variable/schibsted-grotesk";
 import "./globals.css";
 import NavBar from "@/components/NavBar/NavBar";
 import Footer from "@/components/Footer/Footer";
@@ -28,7 +29,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col min-h-screen">
             <NavBar />
-            <main className="flex-1 z-0 pt-22 dark:text-white text-black">
+            <main className="flex-1 text-ink">
               {children}
             </main>
             <Footer />
