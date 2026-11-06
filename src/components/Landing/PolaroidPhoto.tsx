@@ -85,10 +85,10 @@ export const PolaroidPhoto = () => {
               aria-hidden="true"
               className="polaroid-face polaroid-back absolute inset-0 bg-[#fbf7f1] p-6 flex flex-col justify-center gap-4 font-photoText text-night shadow-[0_12px_30px_-12px_rgba(27,19,43,0.45)]"
             >
-              <p className="text-2xl leading-snug">Biomedical engineer, now in cybersecurity.</p>
-              <p className="text-xl leading-snug">Wazuh, Splunk, Hydra, Nmap.</p>
-              <p className="text-xl leading-snug">Orizaba, Veracruz</p>
-              <p className="text-lg text-[#7c5051]">— Lili</p>
+              <p className="text-2xl leading-snug">
+                One of my hobbies is taking things apart to see how they work.
+              </p>
+              <p className="signature w-fit text-2xl text-[#7c5051]">— Lili</p>
             </div>
           </div>
         </button>

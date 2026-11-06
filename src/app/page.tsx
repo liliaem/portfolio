@@ -49,6 +49,7 @@ export default function Home() {
           <div className="flex flex-col gap-3">
             <h1 className="text-5xl sm:text-6xl md:text-7xl font-semibold tracking-[-0.035em] leading-[0.95]">
               {HeroText.name}
+              <span className="hero-cursor" aria-hidden="true" />
             </h1>
             <p className="text-lg sm:text-xl text-brand font-medium">
               {HeroText.title}

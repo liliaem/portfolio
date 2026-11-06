@@ -7,7 +7,8 @@ import { ThemeProvider } from "@/utils/theme/ThemeProvider";
 import { EasterEgg } from "@/components/EasterEgg";
 
 const SITE_URL = "https://lili-martinez.vercel.app";
-const TITLE = "Lilia Martínez | Technical Support & Security Operations";
+const TITLE =
+  "Lilia Martínez | Engineer in Technical Support & Security Operations";
 const DESCRIPTION =
   "Biomedical engineer in technical support and security operations. Wazuh and Splunk home lab, a live IP reputation checker built on the AbuseIPDB API, bilingual English/Spanish.";
 
@@ -19,7 +20,8 @@ export const metadata: Metadata = {
     "Lilia Martínez",
     "Technical Support",
     "Security Operations",
-    "SOC Analyst",
+    "Engineer",
+    "Biomedical Engineer",
     "Wazuh",
     "Splunk",
     "REST APIs",
