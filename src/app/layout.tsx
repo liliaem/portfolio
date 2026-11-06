@@ -4,6 +4,7 @@ import "./globals.css";
 import NavBar from "@/components/NavBar/NavBar";
 import Footer from "@/components/Footer/Footer";
 import { ThemeProvider } from "@/utils/theme/ThemeProvider";
+import { EasterEgg } from "@/components/EasterEgg";
 
 const SITE_URL = "https://lili-martinez.vercel.app";
 const TITLE = "Lilia Martínez | Technical Support & Security Operations";
@@ -45,12 +46,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className="flex flex-col min-h-screen antialiased">
+        <EasterEgg />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col min-h-screen">
             <NavBar />
-            <main className="flex-1 text-ink">
-              {children}
-            </main>
+            <main className="flex-1 text-ink">{children}</main>
             <Footer />
           </div>
         </ThemeProvider>
