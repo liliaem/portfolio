@@ -15,6 +15,7 @@ type CheckResult = {
   totalReports: number;
   lastReportedAt: string | null;
   cachedAt?: string; // present when the result came from our 24-hour cache
+  resolvedFrom?: { host: string; addressCount: number } | null; // present when a website was entered
 };
 
 // Where the visitor came from: ?utm_source=linkedin in the page URL, or the referring site.
@@ -33,6 +34,7 @@ function visitSource(): string {
 const exampleIps = [
   { ip: "8.8.8.8", label: "Google DNS" },
   { ip: "185.220.101.10", label: "Tor exit node" },
+  { ip: "wikipedia.org", label: "a website" },
 ];
 
 const verdictStyles = {
@@ -76,9 +78,10 @@ export const IpChecker = () => {
   return (
     <div className="flex flex-col gap-5">
       <p className="text-lg text-subtle max-w-[38rem]">
-        I built this checker from scratch: it calls the AbuseIPDB API from my
-        own server, with input validation, caching, and rate limiting so it
-        doesn&apos;t break. Try it :)
+        I built this checker integrating the AbuseIPDB REST API server-side. It
+        also resolves websites through DNS and caches results in PostgreSQL,
+        with input validation and rate limiting so it doesn&apos;t break. Try it
+        :)
       </p>
 
       <div className="bg-surface border border-line p-5 sm:p-6 rounded-lg flex flex-col gap-4">
@@ -91,15 +94,15 @@ export const IpChecker = () => {
           className="flex flex-col sm:flex-row gap-3"
         >
           <label htmlFor="ip-input" className="sr-only">
-            IP address
+            IP address or website
           </label>
           <input
             id="ip-input"
             type="text"
             value={ip}
             onChange={(e) => setIp(e.target.value)}
-            placeholder="e.g. 8.8.8.8"
-            maxLength={45}
+            placeholder="e.g. 8.8.8.8 or example.com"
+            maxLength={253}
             autoComplete="off"
             spellCheck={false}
             className="flex-1 min-w-0 rounded-md border border-line bg-background px-3 py-2 font-mono text-base placeholder:text-subtle"
@@ -110,7 +113,7 @@ export const IpChecker = () => {
             className="inline-flex items-center justify-center gap-2 rounded-md bg-brand-fill text-brand-contrast px-4 py-2 font-medium disabled:opacity-50 transition-opacity cursor-pointer disabled:cursor-not-allowed"
           >
             <Search className="w-4 h-4" aria-hidden="true" />
-            {loading ? "Checking…" : "Check IP"}
+            {loading ? "Checking…" : "Check"}
           </button>
         </form>
 
@@ -157,6 +160,21 @@ export const IpChecker = () => {
               </span>
             </div>
             <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-base">
+              {result.resolvedFrom && (
+                <>
+                  <dt className="text-subtle">Website</dt>
+                  <dd className="font-mono break-all">
+                    {result.resolvedFrom.host}
+                    {result.resolvedFrom.addressCount > 1 && (
+                      <span className="font-sans text-subtle">
+                        {" "}
+                        (has {result.resolvedFrom.addressCount} IPs, checked the
+                        first one)
+                      </span>
+                    )}
+                  </dd>
+                </>
+              )}
               <dt className="text-subtle">IP</dt>
               <dd className="font-mono break-all">{result.ip}</dd>
               <dt className="text-subtle">Country</dt>
@@ -176,6 +194,14 @@ export const IpChecker = () => {
                   : "Never"}
               </dd>
             </dl>
+            {result.resolvedFrom &&
+              result.usageType?.includes("Content Delivery Network") && (
+                <p className="text-sm text-subtle">
+                  This website sits behind a CDN, so this is the reputation of
+                  the CDN&apos;s IP, shared by many sites, not of the website
+                  itself.
+                </p>
+              )}
             {result.cachedAt && (
               <p className="text-sm text-subtle">
                 Saved result from {new Date(result.cachedAt).toLocaleString()}.

@@ -79,7 +79,7 @@ export default function Home() {
       </section>
 
       {/* Tools ticker */}
-      <div className="border-t border-line bg-surface py-5">
+      <div className="bg-surface py-5">
         <Marquee label="Tools I use" seconds={35}>
           {tools.map((tool) => (
             <span

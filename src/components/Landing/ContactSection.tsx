@@ -6,10 +6,7 @@ const LAB_URL = "https://github.com/liliaem/soc-home-lab";
 
 export const ContactSection = () => {
   return (
-    <section
-      aria-labelledby="contact-title"
-      className="border-t border-line overflow-hidden"
-    >
+    <section aria-labelledby="contact-title" className="overflow-hidden">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 pt-16 md:pt-24 pb-10 flex flex-col gap-6">
         <h2
           id="contact-title"

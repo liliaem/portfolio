@@ -1,4 +1,4 @@
-import { isIP } from "node:net";
+import { isReservedIp, parseTarget, resolveHost } from "@/lib/target";
 import { after } from "next/server";
 import { sql } from "@/lib/db";
 
@@ -9,6 +9,7 @@ const LOG_RETENTION_DAYS = 30;
 
 type LogEntry = {
   input: string;
+  resolvedIp?: string;
   isValid: boolean;
   status: number;
   verdict?: string;
@@ -18,10 +19,9 @@ type LogEntry = {
 export async function GET(request: Request) {
   const started = Date.now();
 
-  // 1. Read the IP the visitor asked about: /api/check-ip?ip=8.8.8.8
+  // 1. Read what the visitor typed: an IP or a website, e.g. /api/check-ip?ip=example.com
   const { searchParams } = new URL(request.url);
-  const rawInput = (searchParams.get("ip") ?? "").slice(0, 100); // cap what we store
-  const ip = rawInput.trim();
+  const rawInput = (searchParams.get("ip") ?? "").slice(0, 300); // cap what we store
 
   // Visitor context for the log. No visitor IP is ever stored.
   const country = request.headers.get("x-vercel-ip-country"); // set by Vercel, empty locally
@@ -35,9 +35,9 @@ export async function GET(request: Request) {
       try {
         await sql`
           INSERT INTO lookup_log
-            (input, is_valid, status, verdict, cache_hit, response_ms, country, language, referrer)
+            (input, resolved_ip, is_valid, status, verdict, cache_hit, response_ms, country, language, referrer)
           VALUES
-            (${entry.input}, ${entry.isValid}, ${entry.status}, ${entry.verdict ?? null},
+            (${entry.input}, ${entry.resolvedIp ?? null}, ${entry.isValid}, ${entry.status}, ${entry.verdict ?? null},
              ${entry.cacheHit ?? false}, ${Date.now() - started}, ${country}, ${language}, ${referrer})`;
 
         // Housekeeping on roughly 1 in 20 requests: delete old logs and expired cache rows
@@ -50,11 +50,41 @@ export async function GET(request: Request) {
       }
     });
 
-  // 1b. Validate BEFORE doing anything else
-  if (isIP(ip) === 0) {
+  // 1b. Validate BEFORE doing anything else: is it an IP address or a website?
+  const target = parseTarget(rawInput);
+  if (!target) {
     log({ input: rawInput, isValid: false, status: 400 });
     return Response.json(
-      { error: "Please enter a valid IPv4 or IPv6 address." },
+      { error: "Enter an IP address or a website, like 8.8.8.8 or example.com." },
+      { status: 400 }
+    );
+  }
+
+  // 1c. For a website, look up its IP address with DNS (first address only, to save checks)
+  let ip: string;
+  let resolvedFrom: { host: string; addressCount: number } | null = null;
+  if (target.kind === "domain") {
+    const addresses = await resolveHost(target.host);
+    if (addresses.length === 0) {
+      log({ input: rawInput, isValid: true, status: 422 });
+      return Response.json(
+        { error: `Couldn't find an IP address for ${target.host}. Check the spelling.` },
+        { status: 422 }
+      );
+    }
+    ip = addresses[0];
+    resolvedFrom = { host: target.host, addressCount: addresses.length };
+  } else {
+    ip = target.ip;
+  }
+
+  // 1d. Private and reserved addresses (127.0.0.1, 192.168.x.x...) have no public reputation
+  if (isReservedIp(ip)) {
+    log({ input: rawInput, resolvedIp: ip, isValid: false, status: 400 });
+    return Response.json(
+      {
+        error: `${ip} is a private or reserved address, so there's no public reputation to check.`,
+      },
       { status: 400 }
     );
   }
@@ -69,8 +99,8 @@ export async function GET(request: Request) {
 
     if (cached.length > 0) {
       const result = cached[0].result;
-      log({ input: rawInput, isValid: true, status: 200, verdict: result.verdict, cacheHit: true });
-      return Response.json({ ...result, cachedAt: cached[0].checked_at });
+      log({ input: rawInput, resolvedIp: ip, isValid: true, status: 200, verdict: result.verdict, cacheHit: true });
+      return Response.json({ ...result, resolvedFrom, cachedAt: cached[0].checked_at });
     }
   } catch (err) {
     // If the database is down, keep working without the cache
@@ -86,11 +116,11 @@ export async function GET(request: Request) {
       FROM lookup_log
       WHERE is_valid
         AND NOT cache_hit
-        AND status <> 429
+        AND status NOT IN (422, 429) -- only count lookups that reached AbuseIPDB
         AND created_at > now() - interval '24 hours'`;
 
     if (Number(usage.last_minute) >= LIMIT_PER_MINUTE || Number(usage.last_day) >= LIMIT_PER_DAY) {
-      log({ input: rawInput, isValid: true, status: 429 });
+      log({ input: rawInput, resolvedIp: ip, isValid: true, status: 429 });
       const tooManyToday = Number(usage.last_day) >= LIMIT_PER_DAY;
       return Response.json(
         {
@@ -122,7 +152,7 @@ export async function GET(request: Request) {
     });
   } catch (err) {
     console.error("[check-ip] Network error or timeout:", err);
-    log({ input: rawInput, isValid: true, status: 504 });
+    log({ input: rawInput, resolvedIp: ip, isValid: true, status: 504 });
     return Response.json(
       { error: "The IP lookup service is not responding. Please try again later." },
       { status: 504 }
@@ -135,13 +165,13 @@ export async function GET(request: Request) {
     console.error(`[check-ip] AbuseIPDB returned ${response.status}: ${details}`);
 
     if (response.status === 429) {
-      log({ input: rawInput, isValid: true, status: 429 });
+      log({ input: rawInput, resolvedIp: ip, isValid: true, status: 429 });
       return Response.json(
         { error: "Daily lookup limit reached. Please try again tomorrow." },
         { status: 429 }
       );
     }
-    log({ input: rawInput, isValid: true, status: 502 });
+    log({ input: rawInput, resolvedIp: ip, isValid: true, status: 502 });
     return Response.json(
       { error: "The IP lookup service failed. Please try again later." },
       { status: 502 }
@@ -176,6 +206,6 @@ export async function GET(request: Request) {
     console.error("[check-ip] Could not save to cache:", err);
   }
 
-  log({ input: rawInput, isValid: true, status: 200, verdict, cacheHit: false });
-  return Response.json(result);
+  log({ input: rawInput, resolvedIp: ip, isValid: true, status: 200, verdict, cacheHit: false });
+  return Response.json({ ...result, resolvedFrom });
 }
