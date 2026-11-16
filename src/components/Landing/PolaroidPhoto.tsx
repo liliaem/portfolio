@@ -67,7 +67,7 @@ export const PolaroidPhoto = () => {
               />
               <div className="aspect-2/3 relative overflow-hidden">
                 <Image
-                  alt="Lilia Martínez with her arms raised on a mountain trail"
+                  alt="Lilia Martínez smiling in Napoleon's chambers"
                   src="/pressets/me.jpg"
                   fill
                   priority
@@ -88,7 +88,9 @@ export const PolaroidPhoto = () => {
               <p className="text-2xl leading-snug">
                 One of my hobbies is taking things apart to see how they work.
               </p>
-              <p className="signature w-fit text-2xl text-[#7c5051]">— Lili</p>
+              <p className="signature w-fit text-2xl text-nocturne">
+                — Lili
+              </p>{" "}
             </div>
           </div>
         </button>
