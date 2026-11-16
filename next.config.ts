@@ -1,16 +1,27 @@
 import type { NextConfig } from "next";
-
 const nextConfig: NextConfig = {
-  // Easter egg for anyone reading response headers in DevTools (Network tab)
+  poweredByHeader: false,
+
   async headers() {
     return [
       {
         source: "/:path*",
         headers: [
+          //Here is the easter egg for anyone reading response headers in DevTools
           {
             key: "X-Built-By",
+            value: "LM. Hi, curious. Type lili() in the Console.",
+          },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          {
+            key: "Referrer-Policy",
+            value: "strict-origin-when-cross-origin",
+          },
+          {
+            key: "Permissions-Policy",
             value:
-              "Lilia Martinez. Hi, curious one! Type lili() in the Console.",
+              "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
           },
         ],
       },
