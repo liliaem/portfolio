@@ -5,6 +5,7 @@ import NavBar from "@/components/NavBar/NavBar";
 import Footer from "@/components/Footer/Footer";
 import { ThemeProvider } from "@/utils/theme/ThemeProvider";
 import { EasterEgg } from "@/components/EasterEgg";
+import { Analytics } from "@vercel/analytics/next";
 
 const SITE_URL = "https://lili-martinez.vercel.app";
 const TITLE =
@@ -49,6 +50,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="flex flex-col min-h-screen antialiased">
         <EasterEgg />
+        <Analytics />
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col min-h-screen">
             <NavBar />
